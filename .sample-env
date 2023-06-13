@@ -1,0 +1,11 @@
+API_PORT=5000
+NODE_ENV=production
+
+# Base de données
+DATABASE_URL=
+
+#Client
+CLIENT=
+JWT_SECRET=
+EMAIL=
+PASSWORD=
