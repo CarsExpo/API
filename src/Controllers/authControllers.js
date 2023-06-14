@@ -17,9 +17,9 @@ let transporter = nodemailer.createTransport({
 });
 
 exports.register = async (req, res) => {
-  const { email, name, password } = req.body;
-
-  if (!email || !name || !password) {
+  const { email, lastname, firstname, password } = req.body;
+  
+  if (!email || !firstname || !lastname || !password)   {
     res.status(400).send({
       status: "Erreur",
       message: "Les champs ne doivent pas être vides",
@@ -61,7 +61,8 @@ exports.register = async (req, res) => {
 
     const newUser = new user({
       email: email,
-      name: name,
+      lastname: lastname,
+      firstname: firstname,
       password: hash,
     });
 
@@ -96,7 +97,7 @@ exports.verify = async (req, res) => {
   const updatedUser = await user.findOneAndUpdate(
     { email: email },
     { verified: true },
-    { new: true }  // Add this line
+    { new: true }  
   );
 
   await OTP.deleteOne({ email: email, otp: otp });

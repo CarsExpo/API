@@ -1,28 +1,44 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const mongoose = require('mongoose')
-require('dotenv').config();
+  const express = require('express');
+  const bodyParser = require('body-parser');
+  const cors = require('cors');
+  const helmet = require('helmet');
+  const morgan = require('morgan');
+  const mongoose = require('mongoose')
+  require('dotenv').config();
+  const Blacklist = require('./Models/Blacklist');
 
-const app = express();
+  const app = express();
 
-const corsOptions = {
-  origin: process.env.CLIENT,
-  methods: 'GET,POST',
-  credentials: true,
-};
+  const ipFilter = async (req, res, next) => {
+    const clientIp = req.ip;
+    
+    const bannedIp = await Blacklist.findOne({ ip: clientIp });
 
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+    if (bannedIp) {
+      res.status(403).json({ message: "L'accès a été refusé." });
+    } else {
+      next();
+    }
+  };
 
-app.use(cors(corsOptions));
-app.use(helmet.xssFilter());
-app.use(bodyParser.json());
-app.use(morgan('combined'));
+  mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const authRoutes = require('./Routes/auth');
+  app.use(ipFilter);
+  app.use(cors({
+    origin: process.env.CLIENT,
+    credentials: true
+  }));
 
-app.use('/api/auth', authRoutes);
+  app.use(helmet.xssFilter());
+  app.use(bodyParser.json());
+  app.use(morgan('combined'));
 
-app.listen(process.env.API_PORT, () => console.log(`Server is running on port ${process.env.API_PORT}`));
+  const authRoutes = require('./Routes/auth');
+  const userRoutes = require('./Routes/user');
+  const blacklistRoutes = require('./Routes/blacklist');
+
+  app.use('/api/auth', authRoutes);
+  app.use('/api/user', userRoutes);
+  app.use('/api/blacklist', blacklistRoutes);
+
+  app.listen(process.env.API_PORT, () => console.log(`Server is running on port ${process.env.API_PORT}`));
