@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const nodemailer = require("nodemailer");
-const Blacklist = require("../Models/Blacklist");
+const Blacklist = require("../Models/blacklist");
 
 let transporter = nodemailer.createTransport({
   service: "gmail",
