@@ -1,4 +1,4 @@
-const Blacklist = require('../Models/Blacklist');
+const Blacklist = require('../Models/blacklist');
 
 exports.ban = async (req, res) => {
   const { ip } = req.body;
