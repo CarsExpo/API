@@ -5,7 +5,7 @@ const express = require('express');
   const morgan = require('morgan');
   const mongoose = require('mongoose')
   require('dotenv').config();
-  const Blacklist = require('./Models/Blacklist');
+  const Blacklist = require('./Models/blacklist');
 
   const app = express();
 
