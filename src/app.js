@@ -25,7 +25,7 @@ const express = require('express');
 
   app.use(ipFilter);
   app.use(cors({
-    origin: process.env.CLIENT,
+    origin: "https://carsexpo.vercel.app",
     credentials: true
   }));
 
