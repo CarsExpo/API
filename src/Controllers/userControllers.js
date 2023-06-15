@@ -73,7 +73,7 @@ exports.edit = async(req, res) => {
       return res.status(404).json({ message: "Utilisateur non trouvé." });
     }
 
-    const { email, firstname, lastname, password } = req.body;
+    const { email, firstname, lastname, password, discord } = req.body;
 
     let changes = {};
 
@@ -87,6 +87,11 @@ exports.edit = async(req, res) => {
 
     if (lastname && lastname !== user.lastname) {
       changes.lastname = lastname;
+    }
+
+    
+    if (discord && discord !== user.discord) {
+      changes.discord = discord;
     }
 
     if (password && password.trim()) { 
