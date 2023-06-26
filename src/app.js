@@ -35,10 +35,12 @@ const express = require('express');
 
   const authRoutes = require('./Routes/auth');
   const userRoutes = require('./Routes/user');
+  const adminRoutes = require('./Routes/admin');
   const blacklistRoutes = require('./Routes/blacklist');
 
   app.use('/api/auth', authRoutes);
   app.use('/api/user', userRoutes);
   app.use('/api/blacklist', blacklistRoutes);
+  app.use('/api/admin', adminRoutes);
 
   app.listen(process.env.API_PORT, () => console.log(`Server is running on port ${process.env.API_PORT}`));

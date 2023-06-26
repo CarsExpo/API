@@ -7,6 +7,8 @@ const UserSchema = new mongoose.Schema({
   discord: { type: String, required: true },
   password: { type: String, required: true },
   verified: { type: Boolean, required: false, default: false },
+  roles: {type: String, required: false, default: 'user', enum: ['user', 'admin']},
+  work: {type: String, required: false, default: 'Chômeur'},
   resetPasswordToken: { type: String, required: false, default: null},
   resetPasswordExpires: { type: Date, required: false },
   confirmationToken: { type: String, required: false },

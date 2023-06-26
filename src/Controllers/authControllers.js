@@ -17,9 +17,9 @@ let transporter = nodemailer.createTransport({
 });
 
 exports.register = async (req, res) => {
-  const { email, lastname, firstname, password, discord } = req.body;
+  const { email, lastname, firstname, password, discord, work } = req.body;
   
-  if (!email || !firstname || !lastname || !password || !discord)   {
+  if (!email || !firstname || !lastname || !password || !discord || !work)   {
     res.status(400).send({
       status: "Erreur",
       message: "Les champs ne doivent pas être vides",
@@ -65,6 +65,7 @@ exports.register = async (req, res) => {
       firstname: firstname,
       discord: discord,
       password: hash,
+      work: work,
     });
 
     try {

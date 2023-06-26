@@ -73,7 +73,7 @@ exports.edit = async(req, res) => {
       return res.status(404).json({ message: "Utilisateur non trouvé." });
     }
 
-    const { email, firstname, lastname, password, discord } = req.body;
+    const { email, firstname, lastname, password, discord, work } = req.body;
 
     let changes = {};
 
@@ -92,6 +92,10 @@ exports.edit = async(req, res) => {
     
     if (discord && discord !== user.discord) {
       changes.discord = discord;
+    }
+
+    if (work && work !== user.work) {
+      changes.work = work;
     }
 
     if (password && password.trim()) { 
@@ -191,5 +195,29 @@ exports.confirmEdit = async (req, res) => {
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: "Une erreur s'est produite lors de la mise à jour de l'utilisateur." });
+  }
+};
+
+exports.roles = async (req, res) => {
+  const token = req.header("x-auth-token");
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Accès refusé, aucun token fourni." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    }
+
+    res.json({ role: user.roles });
+
+  } catch (err) {
+    res.status(500).json({ message: "Une erreur s'est produite lors de la récupération du rôle de l'utilisateur." });
   }
 };
